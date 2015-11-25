@@ -1,0 +1,194 @@
+@import url(https://fonts.googleapis.com/css?family=Merienda:400,700);
+
+* {
+	font-family: 'Merienda', cursive;
+}
+
+a {
+	text-decoration: none;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+	background: url(http://wallpoper.com/images/00/31/33/51/black-background_00313351.jpg);
+	background-size: cover;
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;	
+}
+
+h1 {
+	margin: 0;
+	color: 	#FFF8DC;
+	font-size: 3em;
+}
+
+#wrapper {
+	max-width: 800px;
+	padding: 2em 10em 2em 15em;
+ 	flex-grow: 0;
+}
+
+#row1, #row2, #row3 {
+	margin: 0 auto;
+	padding: 20px 0px 1px;
+	clear: both;
+}
+#side-bar {
+	margin: 100px 2px 0px 5px;
+	padding-left: 20px;
+}
+
+#player-row1, #player-row2, #player-row3, #round {
+	margin: 0;
+	clear: both;
+	color: #fff;
+	font-size: 1.5em;
+	font-weight: 600;
+	display: flex;
+}
+
+#round {
+	padding-bottom: 30px;
+	color: #FFA500;
+}
+
+#player1 {
+	color: #FF0000; 
+	padding: 1em 1em 1em 1em;
+}
+
+#player2 {
+	color: #00CED1;	
+	padding: 1em 1em 1em 1em;
+}
+
+#draw {
+	padding: 1em 4.3em 1em 1em;
+}
+
+#player1_score, #draw_score, #player2_score {
+	margin: 0 40px 0; 
+	padding: 1em 1em 1.7em 1em;
+	text-align: bottom;
+}
+
+#cell1, #cell4, #cell7 {
+	float: left;
+	margin-right: 1em;
+    height: 5em;
+    width: 5em;
+    padding: 1em 1em 1em 1em;
+    border-radius: 3px;
+    background-color: #888889;
+    box-shadow: 1px -1px rgb(183, 183, 183),
+		 		2px -2px rgb(179, 179, 179),
+		 		3px -3px rgb(175, 175, 175),
+		 		4px -4px rgb(171, 171, 171),
+		 		5px -5px rgb(167, 167, 167),
+		 		6px -6px rgb(163, 163, 163),
+		 		7px -7px rgb(159, 159, 159),
+		 		8px -8px rgb(155, 155, 155),
+		 		9px -9px rgb(151, 151, 151);
+    transform-style: preserve-3d;
+  	transition: transform 1s;	
+}
+
+#cell2, #cell5, #cell8 {
+	display: block;
+	margin-right: 1em;
+	float: left;
+    height: 5em;
+    width: 5em;
+    padding: 1em 1em 1em 1em;
+    border-radius: 3px;
+    background-color: #888889;
+	box-shadow: 1px -1px rgb(183, 183, 183),
+				2px -2px rgb(179, 179, 179),
+				3px -3px rgb(175, 175, 175),
+				4px -4px rgb(171, 171, 171),
+				5px -5px rgb(167, 167, 167),
+				6px -6px rgb(163, 163, 163),
+				7px -7px rgb(159, 159, 159),
+				8px -8px rgb(155, 155, 155),
+				9px -9px rgb(151, 151, 151);
+
+    transform-style: preserve-3d;
+  	transition: transform 1s;			
+}
+
+#cell3, #cell6, #cell9 {
+	display: block;
+	margin-right: 1em;
+	float: left;
+    height: 5em;
+    width: 5em;
+    padding: 1em 1em 1em 1em;
+    border-radius: 3px;
+    background-color: #888889;
+	box-shadow: 1px -1px rgb(183, 183, 183),
+				2px -2px rgb(179, 179, 179),
+				3px -3px rgb(175, 175, 175),
+				4px -4px rgb(171, 171, 171),
+				5px -5px rgb(167, 167, 167),
+				6px -6px rgb(163, 163, 163),
+				7px -7px rgb(159, 159, 159),
+				8px -8px rgb(155, 155, 155),
+				9px -9px rgb(151, 151, 151);
+
+    transform-style: preserve-3d;
+  	transition: transform 1s;			
+}
+
+.flipped {
+    transform: rotateY( 360deg );		
+}
+
+.circle {
+	background: url(http://www.clker.com/cliparts/f/3/a/a/12422585811297959561NYCS-SSI-allexceptnights.svg.thumb.png);
+	background-size: cover;
+}
+
+.cross {	
+	background: url(http://www.clker.com/cliparts/1/1/9/2/12065738771352376078Arnoud999_Right_or_wrong_5.svg.med.png);
+	background-size: cover;
+}
+
+/*--  Highlight the cell -- */
+.highlight {
+	opacity: 0.3;
+}	
+
+/*-- Play again button -- */
+
+#play-again {
+    margin: -30px 0 40px;
+    height: 50px;
+    width: 380px;
+    font-size: 1em;
+	font-weight: bold;
+    border-radius: 10px;
+  	background-color: rgba(94, 110, 141, 0.9);
+  	opacity: 0;
+  	visibility: hidden;
+    -webkit-transition: opacity 0.3s 0s, visibility 0s 0.3s;
+    -moz-transition: opacity 0.3s 0s, visibility 0s 0.3s;
+    transition: opacity 0.3s 0s, visibility 0s 0.3s; 	
+}
+
+#play-again.is-visible {
+  opacity: 1;
+  visibility: visible;
+  -webkit-transition: opacity 0.3s 0s, visibility 0s 0s;
+  -moz-transition: opacity 0.3s 0s, visibility 0s 0s;
+  transition: opacity 0.3s 0s, visibility 0s 0s;
+  -webkit-transform: translateY(30px);
+  -moz-transform: translateY(30px);
+  -ms-transform: translateY(30px);
+  -o-transform: translateY(30px);
+  transform: translateY(30px);  
+}
+
+
+
