@@ -61,7 +61,7 @@ These are for extra credit! Don't focus on these until you've hit the core requi
 * **Get inventive with your styling**, e.g. use hover effects or animations to spiff things up
 * **Use LocalStorage** to persist data locally to allow games to continue after page refresh or loss of internet connectivity
 
-For more information, you can browse to https://gist.github.com/wofockham/8e959d5cfe7d120f1157 .
+For more information, you can browse to https://gist.github.com/wofockham/8e959d5cfe7d120f1157
 
 ---
 
