@@ -17,18 +17,24 @@ Use semantic markup for HTML and CSS (adhere to best practices)
 var player = "cross";
 var player1Score = 0;
 var player2Score = 0;
-var drawScore = 0;
+var drawScore = 0; 
 var win = false;
 var draw = false;
 var move = 0;
 var statement;
 var roundIndex = 1;
 
+
 var GameOn = {
 
 	startGame: function (e) {
 		e.stopPropagation();
 		e.stopImmediatePropagation();
+
+		player1Score = parseInt(window.localStorage.getItem("player1Score"));	
+		player2Score = parseInt(window.localStorage.getItem("player2Score"));	
+		drawScore = parseInt(window.localStorage.getItem("drawScore"));
+		roundIndex = parseInt(window.localStorage.getItem("roundIndex"));	
 
 		if (player == "cross" && GameOn.isEmptyCell($(this))) {
 			$(this).attr('pattern', player);
@@ -46,6 +52,7 @@ var GameOn = {
 
 		GameOn.swapPlayer();
 		GameOn.whoIstheWinner();
+
 
 		if (!win && draw) {
 			$('#cell1').addClass('highlight');
@@ -67,7 +74,11 @@ var GameOn = {
 			$('#play-again').addClass('is-visible');
 			$('#play-again').text(statement);
 			$('.cell').off('click');
-			roundIndex = roundIndex + 1;
+			
+			roundIndex += 1;		//update Round index before click play again event
+
+			Store_cookies.updateGameState();
+
 			$('#play-again').on('click', function(){
 				$('#round').text("ROUND "+roundIndex);
 				GameOn.resetGame();
@@ -173,11 +184,69 @@ var GameOn = {
 
 			return win = true;
 		} 
-	}  
+	},
+
 
 };
 
+var Store_cookies = {
+
+	supportsLocalStorage: function () {
+	  	try {
+	    	return 'localStorage' in window && window['localStorage'] !== null;
+	  	} catch (e) {
+	    	return false;
+	  	}
+	},
+
+	updateGameState: function () {
+		if (!Store_cookies.supportsLocalStorage()) { 
+			return false; 
+		}
+		window.localStorage.setItem("player1Score", player1Score);
+		window.localStorage.setItem("player2Score", player2Score);
+		window.localStorage.setItem("drawScore", drawScore);
+		window.localStorage.setItem("roundIndex", roundIndex);
+
+		return true;
+	},
+
+	resumeGameState: function () {
+		if (!Store_cookies.supportsLocalStorage()) { 
+			return false; 
+		}
+		if (!player1Score >= 0) {
+			player1Score = 0;
+		}
+
+		var updatedPlayer1Score = parseInt(window.localStorage.getItem("player1Score"));	
+		var updatedPlayer2Score = parseInt(window.localStorage.getItem("player2Score"));	
+		var updatedDrawScore = parseInt(window.localStorage.getItem("drawScore"));
+		var updatedRoundIndex = parseInt(window.localStorage.getItem("roundIndex"));	
+
+		$('#player1_score').text(updatedPlayer1Score);
+		$('#player2_score').text(updatedPlayer2Score);
+		$('#draw_score').text(updatedDrawScore);
+		$('#round').text("ROUND "+updatedRoundIndex);
+
+		return true;
+	},
+
+	clearAll: function () {
+		localStorage.clear();
+		player1Score = window.localStorage.setItem("player1Score", 0);
+		player2Score = window.localStorage.setItem("player2Score", 0);
+		drawScore = window.localStorage.setItem("drawScore", 0);
+		roundIndex = window.localStorage.setItem("roundIndex", 1);
+		location.reload();
+
+	}
+};
 
 $(document).ready(function (){
+
+	Store_cookies.resumeGameState();
+
 	$('.cell').click(GameOn.startGame);	
+	$('#clear-cookies').click(Store_cookies.clearAll);
 });

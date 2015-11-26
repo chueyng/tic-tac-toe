@@ -190,5 +190,12 @@ h1 {
   transform: translateY(30px);  
 }
 
-
-
+#clear-cookies {
+    margin: 40px 0;
+    height: 40px;
+    width: 150px;
+    font-size: 1em;
+	font-weight: bold;
+    border-radius: 10px;
+  	background-color: rgba(94, 110, 141, 0.9);
+}
