@@ -23,6 +23,7 @@ var draw = false;
 var move = 0;
 var statement;
 var roundIndex = 1;
+var cell;
 
 
 var GameOn = {
@@ -97,23 +98,140 @@ var GameOn = {
 		return player;	
 	},
 
-	/*
+	withComputerPlayerGame: function (e) {
+
+		e.stopPropagation();
+		e.stopImmediatePropagation();
+
+		player1Score = parseInt(window.localStorage.getItem("player1Score"));	
+		player2Score = parseInt(window.localStorage.getItem("player2Score"));	
+		drawScore = parseInt(window.localStorage.getItem("drawScore"));
+		roundIndex = parseInt(window.localStorage.getItem("roundIndex"));	
+
+		if (GameOn.isEmptyCell($(this))) {
+			player = 'cross';
+			$(this).attr('pattern', player);
+			$(this).addClass(player);
+			$(this).addClass('flipped');
+			move += 1;
+		}
+		
+		cell = GameOn.computerMove();
+
+		if (cell != undefined ) {
+			player = 'circle';
+			$(cell).attr('pattern', player);
+			$(cell).addClass(player);
+			$(cell).addClass('flipped');
+			move += 1;
+		}	
+
+		GameOn.whoIstheWinner();
+
+
+		if (!win && draw) {
+			$('#cell1').addClass('highlight');
+			$('#cell2').addClass('highlight');
+			$('#cell3').addClass('highlight');	
+			$('#cell4').addClass('highlight');
+			$('#cell7').addClass('highlight');
+			$('#cell8').addClass('highlight');
+			$('#cell9').addClass('highlight');				
+			statement = "It's a draw! Play again?";
+		} else if (win && player == "circle") {
+			statement = "Player 1 won! Play again?";
+		} else {
+			statement = "Player 2 won! Play again?";
+		}
+
+
+		if (win || draw) {
+			$('#play-again').addClass('is-visible');
+			$('#play-again').text(statement);
+			$('.cell').off('click');
+			
+			roundIndex += 1;		//update Round index before click play again event
+
+			Store_cookies.updateGameState();
+
+			$('#play-again').on('click', function(){
+				$('#round').text("ROUND "+roundIndex);
+				GameOn.resetGame();
+				$('.cell').on('click', GameOn.withComputerPlayerGame); 
+			});
+		} 
+	},
+
 	computerMove: function () {
 
-		//Do in random calculation
-		var randomCalculation = Math.ceil(Math.random() * 9) + 1;
-		cell = $('#cell' + randomCalculation);
-
-		if (GameOn.isEmptyCell(cell)) {		
-			$(cell).addClass('circle');
-			$(cell).attr('pattern', 'circle');			
+		//First to cater for opponent
+		if ($('#cell1').attr('pattern') == undefined && 
+			(($('#cell3').attr('pattern') == 'cross' && $('#cell2').attr('pattern') == 'cross') 
+				|| ($('#cell5').attr('pattern') == 'cross' && $('#cell9').attr('pattern') == 'cross')
+				|| ($('#cell4').attr('pattern') == 'cross' && $('#cell7').attr('pattern') == 'cross'))) {
+					return $('#cell1');
+		} else if ($('#cell2').attr('pattern') == undefined &&
+			(($('#cell1').attr('pattern') == 'cross' && $('#cell3').attr('pattern') == 'cross')
+				|| ($('#cell5').attr('pattern') == 'cross' && $('#cell8').attr('pattern') == 'cross'))) {
+					return $('#cell2');
+		} else if ($('#cell3').attr('pattern') == undefined &&
+			(($('#cell1').attr('pattern') == 'cross' && $('#cell2').attr('pattern') == 'cross')
+				|| ($('#cell6').attr('pattern') == 'cross' && $('#cell9').attr('pattern') == 'cross')
+				|| ($('#cell5').attr('pattern') == 'cross' && $('#cell7').attr('pattern') == 'cross'))) {
+					return $('#cell3');
+		} else if ($('#cell4').attr('pattern') == undefined && 
+			(($('#cell5').attr('pattern') == 'cross' && $('#cell6').attr('pattern') == 'cross') 
+				|| ($('#cell1').attr('pattern') == 'cross' && $('#cell7').attr('pattern') == 'cross'))) {
+					return $('#cell4');
+		} else if ($('#cell5').attr('pattern') == undefined &&
+			(($('#cell4').attr('pattern') == 'cross' && $('#cell6').attr('pattern') == 'cross')
+				|| ($('#cell2').attr('pattern') == 'cross' && $('#cell8').attr('pattern') == 'cross'))) {
+					return $('#cell5');
+		} else if ($('#cell6').attr('pattern') == undefined &&
+			(($('#cell3').attr('pattern') == 'cross' && $('#cell9').attr('pattern') == 'cross')
+				|| ($('#cell4').attr('pattern') == 'cross' && $('#cell5').attr('pattern') == 'cross'))) {
+					return $('#cell6');			
+		} else if ($('#cell7').attr('pattern') == undefined && 
+			(($('#cell1').attr('pattern') == 'cross' && $('#cell4').attr('pattern') == 'cross') 
+				|| ($('#cell3').attr('pattern') == 'cross' && $('#cell5').attr('pattern') == 'cross')
+				|| ($('#cell8').attr('pattern') == 'cross' && $('#cell9').attr('pattern') == 'cross'))) {
+					return $('#cell7');
+		} else if ($('#cell8').attr('pattern') == undefined &&
+			(($('#cell2').attr('pattern') == 'cross' && $('#cell5').attr('pattern') == 'cross')
+				|| ($('#cell7').attr('pattern') == 'cross' && $('#cell9').attr('pattern') == 'cross'))) {
+					return $('#cell8');
+		} else if ($('#cell9').attr('pattern') == undefined &&
+			(($('#cell3').attr('pattern') == 'cross' && $('#cell6').attr('pattern') == 'cross')
+				|| ($('#cell1').attr('pattern') == 'cross' && $('#cell5').attr('pattern') == 'cross')
+				|| ($('#cell7').attr('pattern') == 'cross' && $('#cell8').attr('pattern') == 'cross'))) {
+					return $('#cell9');
+		//Then only cater for first player 			
+		} else if ($('#cell5').attr('pattern') == undefined) {
+				return $('#cell5');
+		} else if ($('#cell1').attr('pattern') == undefined) {
+				return $('#cell1');
+		} else if ($('#cell9').attr('pattern') == undefined) {
+				return $('#cell9');
+		} else if ($('#cell8').attr('pattern') == undefined) {
+				return $('#cell8');
+		} else if ($('#cell4').attr('pattern') == undefined) {
+				return $('#cell4');
+		} else if ($('#cell7').attr('pattern') == undefined) {
+				return $('#cell7');
+		} else if ($('#cell6').attr('pattern') == undefined) {
+				return $('#cell6');
+		} else if ($('#cell2').attr('pattern') == undefined) {
+				return $('#cell2');
+		} else if ($('#cell3').attr('pattern') == undefined) {
+			return $('#cell3');
 		} else {
+			return undefined;
+		}		
 
-		}
-		GameOn.whoIstheWinner();	
-		console.log('cellCalculation = ',cell);
 	},
-	*/
+
+	
+
 	isEmptyCell: function (thisCell) {
 		return !thisCell.attr('pattern');
 	},
@@ -130,7 +248,8 @@ var GameOn = {
 		$('.cell').removeClass('flipped');	
 		move = 0;
 		win = false;
-		draw = false;	
+		draw = false;
+		player = 'cross';	
 
 		return;
 	},
@@ -244,9 +363,21 @@ var Store_cookies = {
 };
 
 $(document).ready(function (){
+	var radioButton = $('input[name="player-type"]');
+    
+    Store_cookies.resumeGameState();
+	$('.cell').click(GameOn.withComputerPlayerGame);
 
-	Store_cookies.resumeGameState();
+    $(radioButton).click(function(){
+        if($("input[name='player-type']:checked").val() == 'complayer'){
+        	$('.cell').off('click', GameOn.startGame);
+        	$('.cell').click(GameOn.withComputerPlayerGame);
+    	} else {
+    		$('.cell').off('click', GameOn.withComputerPlayerGame);
+            $('.cell').click(GameOn.startGame);	
+        }
+    });
 
-	$('.cell').click(GameOn.startGame);	
-	$('#clear-cookies').click(Store_cookies.clearAll);
+    $('#clear-cookies').click(Store_cookies.clearAll);
+
 });
